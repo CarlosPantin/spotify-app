@@ -1,4 +1,3 @@
-// UserProfile.js
 import React from "react";
 
 function UserProfile({ userProfile }) {
@@ -7,7 +6,7 @@ function UserProfile({ userProfile }) {
       <h2>User Profile</h2>
       <p>Display Name: {userProfile.display_name}</p>
       <p>Email: {userProfile.email}</p>
-      {/* Add more profile information as needed */}
+      <p>Country: {userProfile.country}</p>
     </div>
   );
 }

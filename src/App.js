@@ -2,17 +2,19 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import Header from "./components/Header";
-import UserProfile from "./components/UserProfile";
+import PlaylistList from "./components/Playlist";
 
 function App() {
-  const CLIENT_ID = "5d8095856a0449d0bf43848d1c99c77c";
+  const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
+
   const REDIRECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
-  const SCOPES = "user-read-private user-read-email";
+  const SCOPES = "user-read-private user-read-email playlist-read-private";
 
   const [token, setToken] = useState("");
   const [userProfile, setUserProfile] = useState(null);
+  const [showPlaylists, setShowPlaylists] = useState(false);
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -44,7 +46,8 @@ function App() {
         },
       })
       .then((response) => {
-        setUserProfile(response.data);
+        const userProfile = response.data;
+        setUserProfile(userProfile);
       })
       .catch((error) => {
         console.error("Error fetching user profile:", error);
@@ -55,22 +58,35 @@ function App() {
     setToken("");
     window.localStorage.removeItem("token");
     setUserProfile(null);
+    setShowPlaylists(false);
   };
 
   const login = () => {
-    // Redirect the user to the Spotify login page
     window.location.href = `${AUTH_ENDPOINT}?client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=${RESPONSE_TYPE}&scope=${SCOPES}`;
+  };
+
+  const showPlaylistPage = () => {
+    setShowPlaylists(true);
+  };
+
+  const backToProfile = () => {
+    setShowPlaylists(false);
   };
 
   return (
     <div className="App">
-      <Header
-        token={token}
-        onLogout={logout}
-        onLogin={login}
-      />
-      {token && userProfile && (
-        <UserProfile userProfile={userProfile} />
+      <Header token={token} onLogout={logout} onLogin={login} />
+      {token && userProfile && !showPlaylists && (
+        <div className="profile">
+          <h2>Your Profile</h2>
+          <p>Display Name: {userProfile.display_name}</p>
+          <p>Email: {userProfile.email}</p>
+          <p>Country: {userProfile.country}</p>
+          <button onClick={showPlaylistPage}>View Playlists</button>
+        </div>
+      )}
+      {showPlaylists && (
+        <PlaylistList token={token} onBackToProfile={backToProfile} />
       )}
     </div>
   );
