@@ -1,8 +1,15 @@
 import React from "react";
 import "./Header.css";
 
-
-function Header({ token, onLogout, onLogin, onShowPlaylists, onBackToProfile }) {
+function Header({
+  token,
+  onLogout,
+  onLogin,
+  onShowPlaylists,
+  onBackToProfile,
+  onShowTopArtists, 
+  onShowTopTracks, 
+}) {
   return (
     <header className="App-header">
       <h1>Spotify React</h1>
@@ -13,7 +20,13 @@ function Header({ token, onLogout, onLogin, onShowPlaylists, onBackToProfile }) 
               View Playlists
             </button>
             <button className="top-button" onClick={onBackToProfile}>
-            Profile
+              Profile
+            </button>
+            <button className="top-button" onClick={onShowTopArtists}>
+              Top Artists
+            </button>
+            <button className="top-button" onClick={onShowTopTracks}>
+              Top Tracks
             </button>
             <button className="top-button" onClick={onLogout}>
               Logout

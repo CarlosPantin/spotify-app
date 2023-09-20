@@ -8,6 +8,7 @@ function Playlist({ token}) {
   useEffect(() => {
     if (token) {
       fetchUserPlaylists(token);
+      console.log(token)
     }
   }, [token]);
 
