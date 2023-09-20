@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./App.css";
 import Header from "./components/Header";
-import PlaylistList from "./components/Playlist";
+import UserProfile from "./components/UserProfile";
+import PlaylistList from "./components/Playlist"; 
 
 function App() {
   const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
@@ -13,6 +14,7 @@ function App() {
   const SCOPES = "user-read-private user-read-email playlist-read-private";
 
   const [token, setToken] = useState("");
+  
   const [userProfile, setUserProfile] = useState(null);
   const [showPlaylists, setShowPlaylists] = useState(false);
 
@@ -70,20 +72,21 @@ function App() {
   };
 
   const backToProfile = () => {
+    console.log("Back to Profile button clicked");
     setShowPlaylists(false);
   };
 
   return (
     <div className="App">
-      <Header token={token} onLogout={logout} onLogin={login} />
+      <Header
+        token={token}
+        onLogout={logout}
+        onLogin={login}
+        onShowPlaylists={showPlaylistPage}
+        onBackToProfile={backToProfile}
+      />
       {token && userProfile && !showPlaylists && (
-        <div className="profile">
-          <h2>Your Profile</h2>
-          <p>Display Name: {userProfile.display_name}</p>
-          <p>Email: {userProfile.email}</p>
-          <p>Country: {userProfile.country}</p>
-          <button onClick={showPlaylistPage}>View Playlists</button>
-        </div>
+        <UserProfile userProfile={userProfile} />
       )}
       {showPlaylists && (
         <PlaylistList token={token} onBackToProfile={backToProfile} />

@@ -30,7 +30,6 @@ function Playlist({ token, onBackToProfile }) {
   return (
     <div className="playlist-list">
       <h2>Your Playlists</h2>
-      <button onClick={onBackToProfile}>Back to Profile</button>
       <div className="playlist-cards">
         {userPlaylists.map((playlist) => (
           <div key={playlist.id} className="playlist-card">
