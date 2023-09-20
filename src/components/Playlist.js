@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./PlayList.css"; 
 
-function Playlist({ token, onBackToProfile }) {
+function Playlist({ token}) {
   const [userPlaylists, setUserPlaylists] = useState([]);
 
   useEffect(() => {
