@@ -15,13 +15,13 @@
 
 .App-header {
   background-color: #1db954;
-  padding: 10px 0; /* Adjust the padding as needed to control header size */
+  padding: 10px 0; 
   text-align: center;
 }
 
 .header-content {
-  max-width: 800px; /* Limit the width of the header content */
-  margin: 0 auto; /* Center the header content horizontally */
+  max-width: 800px; 
+  margin: 0 auto; 
 }
 
 .App-link {

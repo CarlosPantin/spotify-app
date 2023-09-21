@@ -6,6 +6,7 @@ import UserProfile from "./components/UserProfile";
 import PlaylistList from "./components/Playlist";
 import TopArtists from "./components/TopArtists";
 import TopTracks from "./components/TopTracks";
+import Login from "./components/Login"; 
 
 function App() {
   const CLIENT_ID = process.env.REACT_APP_SPOTIFY_CLIENT_ID;
@@ -13,13 +14,15 @@ function App() {
   const REDIRECT_URI = "http://localhost:3000";
   const AUTH_ENDPOINT = "https://accounts.spotify.com/authorize";
   const RESPONSE_TYPE = "token";
-  const SCOPES = "user-read-private user-read-email playlist-read-private user-top-read";
+  const SCOPES =
+    "user-read-private user-read-email playlist-read-private user-top-read";
 
   const [token, setToken] = useState("");
   const [userProfile, setUserProfile] = useState(null);
   const [showPlaylists, setShowPlaylists] = useState(false);
   const [showTopArtists, setShowTopArtists] = useState(false);
   const [showTopTracks, setShowTopTracks] = useState(false);
+  const [showProfile, setShowProfile] = useState(true); 
 
   useEffect(() => {
     const hash = window.location.hash;
@@ -35,6 +38,7 @@ function App() {
       window.location.hash = "";
       window.localStorage.setItem("token", token);
     }
+    console.log("Access Token:", token);
     setToken(token);
 
     if (token) {
@@ -70,26 +74,30 @@ function App() {
 
   const showPlaylistPage = () => {
     setShowPlaylists(true);
-    setShowTopArtists(false); 
-    setShowTopTracks(false); 
-  };
-
-  const showTopArtistsPage = () => {
-    setShowTopArtists(true);
-    setShowPlaylists(false); 
-    setShowTopTracks(false); 
-  };
-
-  const showTopTracksPage = () => {
-    setShowTopTracks(true);
-    setShowPlaylists(false); 
-    setShowTopArtists(false); 
+    setShowTopArtists(false);
+    setShowTopTracks(false);
+    setShowProfile(false);
   };
 
   const backToProfile = () => {
     setShowPlaylists(false);
     setShowTopArtists(false);
     setShowTopTracks(false);
+    setShowProfile(true);
+  };
+
+  const showTopArtistsPage = () => {
+    setShowTopArtists(true);
+    setShowPlaylists(false);
+    setShowTopTracks(false);
+    setShowProfile(false);
+  };
+
+  const showTopTracksPage = () => {
+    setShowTopTracks(true);
+    setShowPlaylists(false);
+    setShowTopArtists(false);
+    setShowProfile(false);
   };
 
   const logout = () => {
@@ -98,9 +106,8 @@ function App() {
     setShowPlaylists(false);
     setShowTopArtists(false);
     setShowTopTracks(false);
+    setShowProfile(true);
   };
-
-  const showProfile = !showTopArtists && !showTopTracks;
 
   return (
     <div className="App">
@@ -121,6 +128,7 @@ function App() {
       )}
       {showTopArtists && <TopArtists token={token} />}
       {showTopTracks && <TopTracks token={token} />}
+      {!token && <Login onLogin={login} />} 
     </div>
   );
 }
